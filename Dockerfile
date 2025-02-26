@@ -23,12 +23,11 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install pdo pdo_pgsql sockets \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd \
+    && docker-php-ext-install pcntl \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-RUN docker-php-ext-install pcntl
-
-RUN pecl install swoole
+RUN if ! pecl list | grep -q swoole; then pecl install swoole && docker-php-ext-enable swoole; fi
 
 RUN echo "extension=swoole.so" > /usr/local/etc/php/conf.d/20-swoole.ini
 

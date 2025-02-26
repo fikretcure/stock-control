@@ -7,10 +7,14 @@ services:
     volumes:
       - ./:/app
     working_dir: /app
-    command: sh -c "composer install && composer update && npm install && tail -f /dev/null"
+    command: sh -c "composer install && composer update && npm install && php artisan octane:start  --watch --server=swoole --host=0.0.0.0 --port=9501"
     restart: unless-stopped
     depends_on:
       - postgres
+    networks:
+      backend:
+        aliases:
+          - workspace
 
   postgres:
     image: postgres:latest
@@ -22,7 +26,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "5433:5432"
     restart: unless-stopped
 
   nginx:
@@ -30,13 +34,16 @@ services:
     container_name: nginx
     volumes:
       - ./log/nginx:/var/log/nginx
+      - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
+
     restart: unless-stopped
     ports:
-      - "80:80"
-      - "443:443"
+      - "81:81"
     depends_on:
       - postgres
       - workspace
+    networks:
+      - backend
 
 
 
@@ -44,3 +51,9 @@ services:
 volumes:
   postgres_data:
     name: postgres_data
+
+
+networks:
+  backend:
+    name: backend
+    driver: bridge
