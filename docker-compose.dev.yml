@@ -7,7 +7,7 @@ services:
     volumes:
       - ./:/app
     working_dir: /app
-    command: sh -c "composer install && composer update && npm install && php artisan octane:start  --watch --server=swoole --host=0.0.0.0 --port=9501"
+    command: sh -c "composer install && composer update && npm install && php artisan octane:start   --watch --server=swoole  --max-requests=250  --host=0.0.0.0 --port=9501"
     restart: unless-stopped
     depends_on:
       - postgres
