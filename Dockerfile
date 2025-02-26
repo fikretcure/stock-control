@@ -1,6 +1,7 @@
 FROM php:8.4-fpm
 
-# Sistem bağımlılıklarını yükle ve gereksiz dosyaları temizle
+USER root
+
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
@@ -25,11 +26,11 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-RUN docker-php-ext-install pcntl
+#RUN docker-php-ext-install pcntl
 
-RUN pecl install swoole
+#RUN pecl install swoole
 
-RUN echo "extension=swoole.so" > /usr/local/etc/php/conf.d/20-swoole.ini
+#RUN echo "extension=swoole.so" > /usr/local/etc/php/conf.d/20-swoole.ini
 
 # Composer'ı yükle (En son sürüm)
 RUN if ! command -v composer >/dev/null 2>&1; then \
@@ -38,17 +39,3 @@ RUN if ! command -v composer >/dev/null 2>&1; then \
 
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
     apt-get install -y nodejs
-
-# Çalışma dizini
-WORKDIR /app
-
-# Composer dosyalarını kopyala ve bağımlılıkları yükle
-COPY composer.json composer.lock /app/
-
-RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist
-
-# Uygulama dosyalarını kopyala
-COPY . /app
-
-# Autoload dosyalarını optimize et
-RUN composer dump-autoload --optimize
