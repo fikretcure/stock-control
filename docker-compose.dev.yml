@@ -1,5 +1,13 @@
 services:
 
+  workspace:
+    build:
+      context: .
+    container_name: workspace
+    volumes:
+      - ./:/app
+    working_dir: /app
+
   postgres:
     image: postgres:latest
     container_name: postgres
