@@ -8,6 +8,7 @@ services:
       - ./:/app
     working_dir: /app
     command: sh -c "composer install && tail -f /dev/null"
+    restart: unless-stopped
 
   postgres:
     image: postgres:latest
