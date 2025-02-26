@@ -38,7 +38,7 @@ services:
 
     restart: unless-stopped
     ports:
-      - "81:81"
+      - "3001:3001"
     depends_on:
       - postgres
       - workspace
