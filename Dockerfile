@@ -20,6 +20,7 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     bash \
     supervisor \
+    vim \
     && docker-php-ext-install pdo pdo_pgsql sockets \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd \
