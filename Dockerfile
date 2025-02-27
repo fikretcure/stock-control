@@ -27,7 +27,7 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-RUN if ! pecl list | grep -q swoole; then pecl install swoole && docker-php-ext-enable swoole; fi
+RUN pecl install swoole
 
 RUN echo "extension=swoole.so" > /usr/local/etc/php/conf.d/20-swoole.ini
 
