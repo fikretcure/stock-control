@@ -38,15 +38,12 @@ services:
 
     restart: unless-stopped
     ports:
-      - "3001:3001"
+      - "${NGINX_PORT}:81"
     depends_on:
       - postgres
       - workspace
     networks:
       - backend
-
-
-
 
 volumes:
   postgres_data:
