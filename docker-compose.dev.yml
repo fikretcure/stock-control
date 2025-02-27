@@ -6,6 +6,8 @@ services:
     container_name: workspace
     volumes:
       - ./:/app
+      - /var/run/docker.sock:/var/run/docker.sock
+
     working_dir: /app
     command: sh -c "[ ! -f .env ] && cp .env.example .env; composer install && composer update && npm install && php artisan octane:start --watch --server=swoole --max-requests=250 --host=0.0.0.0 --port=9501"
     restart: unless-stopped
@@ -15,6 +17,7 @@ services:
       sc:
         aliases:
           - workspace
+
 
   postgres:
     image: postgres:latest
@@ -32,6 +35,8 @@ services:
       sc:
         aliases:
           - postgres
+
+
   nginx:
     image: nginx:latest
     container_name: nginx
