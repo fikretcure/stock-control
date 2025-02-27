@@ -1,2 +1,2 @@
-composer update
-php artisan migrate:fresh --seed
+docker exec -it workspace bash -c "composer update"
+docker exec -it workspace bash -c "php artisan migrate:fresh --seed"
