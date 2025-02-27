@@ -6,6 +6,6 @@ Son teknolojilerle donatilmis bu projemi umarim begenirsiniz.
 - cp .env.example .env
 - docker compose -f docker-compose.dev.yml up --build -d
 
-## Composer ve Db Islemleri
+## Composer ve Db Islemleri && Portainer Icindende Komut Calistirabilirsiniz
 - bash reset.sh
 - http://localhost:3002
