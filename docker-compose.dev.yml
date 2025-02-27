@@ -12,7 +12,7 @@ services:
     depends_on:
       - postgres
     networks:
-      backend:
+      sc:
         aliases:
           - workspace
 
@@ -26,9 +26,12 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - "5433:5432"
+      - "${EXTERNAL_DB_PORT}:5432"
     restart: unless-stopped
-
+    networks:
+      sc:
+        aliases:
+          - postgres
   nginx:
     image: nginx:latest
     container_name: nginx
@@ -42,14 +45,28 @@ services:
       - postgres
       - workspace
     networks:
-      - backend
+      - sc
+
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    command: -H unix:///var/run/docker.sock
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    ports:
+      - "9000:9000"
+    networks:
+      - sc
 
 volumes:
   postgres_data:
     name: postgres_data
-
+  portainer_data:
+    name: portainer_data
 
 networks:
-  backend:
-    name: backend
+  sc:
+    name: sc
     driver: bridge
