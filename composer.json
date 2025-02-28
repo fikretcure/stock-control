@@ -20,7 +20,9 @@
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.6",
         "pestphp/pest": "^3.7",
-        "pestphp/pest-plugin-laravel": "^3.1"
+        "pestphp/pest-plugin-laravel": "^3.1",
+        "php-amqplib/rabbitmq-bundle": "^2.17",
+        "predis/predis": "^2.3"
     },
     "autoload": {
         "psr-4": {
