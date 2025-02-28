@@ -19,6 +19,6 @@ class UserSeeder extends Seeder
             'email' => 'career@fikretcure.dev',
         ]);
 
-        User::factory(100)->create();
+        User::factory(10)->create();
     }
 }

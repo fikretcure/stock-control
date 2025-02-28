@@ -48,3 +48,6 @@ RUN apt-get update && \
     curl -fsSL https://get.docker.com -o get-docker.sh && \
     sh get-docker.sh && \
     rm -rf /var/lib/apt/lists/*
+
+RUN echo "alias r='bash reset.sh'" >> ~/.bashrc && \
+    echo "source ~/.bashrc" >> ~/.bash_profile
