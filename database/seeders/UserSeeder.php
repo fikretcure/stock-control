@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Services\RedisService;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -20,5 +21,9 @@ class UserSeeder extends Seeder
         ]);
 
         User::factory(10)->create();
+
+        User::query()->get(['id','name','surname','email','password'])->makeVisible(['password'])->each(function ($user) {
+            new RedisService()->set($user->email, collect($user)->except(['email']));
+        });
     }
 }
