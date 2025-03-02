@@ -16,7 +16,7 @@ class CategorySeeder extends Seeder
         $category  =  Category::create([
             'name'  => 'otomabil',
         ]);
-        
+
 
         $category->childiren()->create([
             'name'  => 'auid'

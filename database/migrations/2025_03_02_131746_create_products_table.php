@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('alias')->unique()->nullable();
             $table->string('reg_no');
             $table->unsignedBigInteger('quantity')->default(0);
+            $table->foreignIdFor(\App\Models\Category::class)->constrained();
             $table->timestamps();
             $table->softDeletes();
         });

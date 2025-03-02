@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -53,6 +54,7 @@ class ProductSeeder extends Seeder
             Product::create([
                'name' => $productName,
                 'quantity'=> rand(1, 100),
+                'category_id' => Category::query()->inRandomOrder()->first()->id,
             ]);
         }
 
