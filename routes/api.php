@@ -1,12 +1,12 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Middleware\AuthMiddleware;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
 
-Route::get('test', function (Request $request) {
-   return now();
+Route::middleware(AuthMiddleware::class)->group(function () {
+    Route::prefix('auth')->controller(\App\Http\Controllers\AuthController::class)->group(function () {
+        Route::post('login', 'login')->withoutMiddleware(AuthMiddleware::class);
+        Route::get('session', 'session');
+    });
 });
