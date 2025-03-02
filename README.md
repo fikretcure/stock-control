@@ -11,4 +11,4 @@ Son teknolojilerle donatilmis bu projemi umarim begenirsiniz.
 
 ## Workspace icine girip islem yapmak icin - Portainer icinden de komut calistirabilirsiniz
 - docker exec -it workspace bash
-- worspace konteyniri icine girdikten sonra r (alias) komutu ile bash reset.sh scriptini calistirabilirsiniz
+- Workspace konteyneri içine girdikten sonra r (alias) komutu ile bash reset.sh scriptini çalıştırabilirsiniz.
