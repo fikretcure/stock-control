@@ -7,19 +7,22 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
-class Product extends Model
+class Category extends Model
 {
-    /** @use HasFactory<\Database\Factories\ProductFactory> */
+    /** @use HasFactory<\Database\Factories\CategoryFactory> */
     use HasFactory , SoftDeletes;
-
 
     protected static function boot()
     {
         parent::boot();
 
         static::creating(function ($product) {
-            $max_id =Product::withTrashed()->max('id')+1;
-            $product->reg_no ='P' . Str::padLeft($max_id, 6, 0);
+            $max_id =Category::withTrashed()->max('id')+1;
+            $product->reg_no ='C' . Str::padLeft($max_id, 6, 0);
         });
+    }
+
+    public function childiren(){
+        return $this->hasMany(Category::class,'category_id');
     }
 }
