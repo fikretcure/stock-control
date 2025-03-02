@@ -16,6 +16,8 @@ class CategoryElastic extends ElasticService
         $params = [
             'id' => $category->id,
             'name' => $category->name,
+            'reg_no' => $category->reg_no,
+            'category_id' => $category->category_id,
             'created_at' => $category->created_at,
         ];
         parent::index($params);
