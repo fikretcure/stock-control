@@ -65,11 +65,29 @@ services:
     networks:
       - sc
 
+
+
+  pgadmin:
+      image: dpage/pgadmin4:latest
+      container_name: pgadmin
+      restart: always
+      ports:
+        - "5050:80"
+      environment:
+        PGADMIN_DEFAULT_EMAIL: admin@example.com
+        PGADMIN_DEFAULT_PASSWORD: root
+      volumes:
+        - pgadmin_data:/var/lib/pgadmin
+      networks:
+        - sc
+
 volumes:
   postgres_data:
     name: postgres_data
   portainer_data:
     name: portainer_data
+  pgadmin_data:
+    name: pgadmin_data
 
 networks:
   sc:
