@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Services\Elastic\ProductElastic;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Redis;
 
@@ -14,6 +15,15 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         Redis::connection()->flushdb();
+
+
+            try {
+                new ProductElastic()->deleteIndex();
+            } catch (\Exception $e) {
+            }
+
+            new ProductElastic()->createIndex();
+
 
         $this->call([
             UserSeeder::class,

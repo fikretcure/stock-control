@@ -102,6 +102,42 @@ services:
     networks:
       - sc
 
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.6.0
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - ELASTICSEARCH_USERNAME=root
+      - ELASTICSEARCH_PASSWORD=root
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - sc
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.6.0
+    container_name: kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    networks:
+      - sc
+    volumes:
+      - kibana_data:/usr/share/kibana/data
+
 volumes:
   postgres_data:
     name: postgres_data
@@ -113,6 +149,10 @@ volumes:
     name: redis_data
   redis_insight_data:
     name: redis_insight_data
+  elasticsearch_data:
+    name: elasticsearch_data
+  kibana_data:
+    name: kibana_data
 
 networks:
   sc:
