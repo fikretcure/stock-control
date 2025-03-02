@@ -12,11 +12,11 @@ class CategoryElastic extends ElasticService
     }
 
 
-    public function store(object $product){
+    public function store(object $category){
         $params = [
-            'id' => $product->id,
-            'name' => $product->name,
-            'created_at' => $product->created_at,
+            'id' => $category->id,
+            'name' => $category->name,
+            'created_at' => $category->created_at,
         ];
         parent::index($params);
     }
