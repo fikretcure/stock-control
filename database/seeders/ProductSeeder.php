@@ -7,7 +7,6 @@ use App\Models\Company;
 use App\Models\Product;
 use App\Services\Elastic\CompanyElastic;
 use App\Services\Elastic\ProductElastic;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class ProductSeeder extends Seeder

@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Services\AuthService;
 use App\Services\RedisService;
 use Closure;
 use Illuminate\Http\Request;

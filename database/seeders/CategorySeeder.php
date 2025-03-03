@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Category;
 use App\Services\Elastic\CategoryElastic;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class CategorySeeder extends Seeder
@@ -24,6 +23,27 @@ class CategorySeeder extends Seeder
         ]);
         $category->childiren()->create([
             'name'  => 'Toyota'
+        ]);
+
+
+
+        $category  =  Category::create([
+            'name'  => 'Kitap',
+        ]);
+
+
+        $category->childiren()->create([
+            'name'  => 'Roman'
+        ]);
+        $category->childiren()->create([
+            'name'  => 'Kisisel Gelisim'
+        ]);
+
+        $category->childiren()->create([
+            'name'  => 'Cocuk Hikaye'
+        ]);
+        $category->childiren()->create([
+            'name'  => 'Gerilim'
         ]);
 
         Category::query()->get()->each(function ($category) {
