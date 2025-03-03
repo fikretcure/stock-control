@@ -4,6 +4,7 @@ namespace App\Services\Elastic;
 
 use Carbon\Carbon;
 use Elastic\Elasticsearch\ClientBuilder;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ElasticService
 {
@@ -57,4 +58,45 @@ class ElasticService
         $this->client->index($params);
     }
 
+    public function search()
+    {
+        $page = request()->get('page', 1); // Varsayılan olarak 1. sayfa
+        $perPage = request()->get('per_page', 10);
+        $from = ($page - 1) * $perPage;
+
+        $sort = request()->get('sort', 'id');
+        $order = request()->get('order', 'desc');
+
+
+
+        $param = [
+            'index' => 'categories',
+            'body' => [
+                'from' => $from,
+                'size' => $perPage,
+                'sort' => [
+                    $sort => [ // .keyword alt alanını kullanıyoruz
+                        'order' => $order,
+                    ],
+                ],
+            ],
+        ];
+
+
+        $response = $this->client->search($param);
+        $hits = collect($response['hits']['hits'])->map(function ($item) {
+            return $item['_source'];
+        });
+
+        $total = $response['hits']['total']['value'];
+
+        return  new LengthAwarePaginator(
+            collect($hits),
+            $total,
+            $perPage,
+            $page,
+            ['path' => request()->url()]
+        );
+
+    }
 }
