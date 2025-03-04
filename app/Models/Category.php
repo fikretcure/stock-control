@@ -14,6 +14,11 @@ class Category extends Model
 
     protected $appends = ['all_parents'];
 
+    protected $fillable = [
+        'name',
+        'category_id',
+        'alias'
+    ];
 
     protected static function boot()
     {
