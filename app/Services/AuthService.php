@@ -7,18 +7,32 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Str;
 
+/**
+ *
+ */
 class AuthService
 {
+    /**
+     * @param RedisService $redisService
+     */
     public function __construct(
         public RedisService $redisService
     ) {}
 
-    public function session()
+    /**
+     * @return mixed
+     */
+    public function session(): mixed
     {
         return $this->redisService->get(request()->bearerToken());
     }
 
-    public function login($request)
+    /**
+     * @param $request
+     * @return string
+     * @throws LoginException
+     */
+    public function login($request): string
     {
         if (Redis::exists($request->email)) {
             $user = $this->redisService->get($request->email);
@@ -33,6 +47,9 @@ class AuthService
         throw new LoginException;
     }
 
+    /**
+     * @return string
+     */
     protected function getToken(): string
     {
         return Str::uuid()->toString().Str::random(120);

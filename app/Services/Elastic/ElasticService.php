@@ -3,13 +3,32 @@
 namespace App\Services\Elastic;
 
 use Carbon\Carbon;
+use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\ClientBuilder;
+use Elastic\Elasticsearch\Exception\AuthenticationException;
+use Elastic\Elasticsearch\Exception\ClientResponseException;
+use Elastic\Elasticsearch\Exception\MissingParameterException;
+use Elastic\Elasticsearch\Exception\ServerResponseException;
+use Elastic\Elasticsearch\Response\Elasticsearch;
+use Http\Promise\Promise;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
+/**
+ *
+ */
 class ElasticService
 {
-    public \Elastic\Elasticsearch\Client $client;
+    /**
+     * @var Client
+     */
+    public Client $client;
 
+    /**
+     * @param string $index
+     * @throws AuthenticationException
+     */
     public function __construct(
         public string $index
     )
@@ -18,7 +37,14 @@ class ElasticService
     }
 
 
-    public function show( $id)
+    /**
+     * @param $id
+     * @return mixed
+     * @throws ClientResponseException
+     * @throws MissingParameterException
+     * @throws ServerResponseException
+     */
+    public function show($id): mixed
     {
         return $this->client->get([
             'index' => $this->index,
@@ -27,8 +53,13 @@ class ElasticService
     }
 
 
-
-    public function createIndex()
+    /**
+     * @return void
+     * @throws ClientResponseException
+     * @throws MissingParameterException
+     * @throws ServerResponseException
+     */
+    public function createIndex(): void
     {
 
         $params = [
@@ -46,7 +77,13 @@ class ElasticService
         $this->client->indices()->create($params);
     }
 
-    public function deleteIndex()
+    /**
+     * @return void
+     * @throws ClientResponseException
+     * @throws MissingParameterException
+     * @throws ServerResponseException
+     */
+    public function deleteIndex(): void
     {
         $this->client->indices()->delete([
             'index' => $this->index,
@@ -54,9 +91,14 @@ class ElasticService
     }
 
 
-
-
-    public function index($body = [])
+    /**
+     * @param array $body
+     * @return void
+     * @throws ClientResponseException
+     * @throws MissingParameterException
+     * @throws ServerResponseException
+     */
+    public function index(array $body = []): void
     {
         $body['created_at'] = Carbon::parse($body['created_at'])->toIso8601String();
         $params = [
@@ -67,7 +109,14 @@ class ElasticService
         $this->client->index($params);
     }
 
-    public function search()
+    /**
+     * @return LengthAwarePaginator
+     * @throws ClientResponseException
+     * @throws ServerResponseException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function search(): LengthAwarePaginator
     {
         $page = request()->get('page', 1); // Varsayılan olarak 1. sayfa
         $perPage = request()->get('per_page', 10);
@@ -110,7 +159,14 @@ class ElasticService
     }
 
 
-    public function updateIndex($body = [])
+    /**
+     * @param array $body
+     * @return Elasticsearch|Promise
+     * @throws ClientResponseException
+     * @throws MissingParameterException
+     * @throws ServerResponseException
+     */
+    public function updateIndex(array $body = []): Elasticsearch|Promise
     {
         $params = [
             'index' => $this->index,
