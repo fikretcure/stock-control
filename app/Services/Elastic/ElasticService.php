@@ -33,7 +33,7 @@ class ElasticService
         public string $index
     )
     {
-        $this->client = ClientBuilder::create()->setHosts(['http://elasticsearch:9200'])->build();
+        $this->client = ClientBuilder::create()->setHosts([env('ELASTIC_HOST')])->build();
     }
 
 
