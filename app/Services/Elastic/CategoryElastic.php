@@ -3,16 +3,31 @@
 namespace App\Services\Elastic;
 
 use App\Models\Category;
+use Elastic\Elasticsearch\Exception\AuthenticationException;
+use Elastic\Elasticsearch\Exception\ClientResponseException;
+use Elastic\Elasticsearch\Exception\MissingParameterException;
+use Elastic\Elasticsearch\Exception\ServerResponseException;
 
+/**
+ *
+ */
 class CategoryElastic extends ElasticService
 {
 
+    /**
+     * @throws AuthenticationException
+     */
     public function __construct(){
         parent::__construct(new Category()->getTable());
     }
 
 
-    protected function dataDto(object $category){
+    /**
+     * @param object $category
+     * @return array
+     */
+    protected function dataDto(object $category): array
+    {
         return [
             'id' => $category->id,
             'name' => $category->name,
@@ -26,12 +41,27 @@ class CategoryElastic extends ElasticService
     }
 
 
-    public function store(object $category){
+    /**
+     * @param object $category
+     * @return void
+     * @throws ClientResponseException
+     * @throws MissingParameterException
+     * @throws ServerResponseException
+     */
+    public function store(object $category): void
+    {
         parent::index($this->dataDto($category));
     }
 
 
-    public function update(object $category)
+    /**
+     * @param object $category
+     * @return void
+     * @throws ClientResponseException
+     * @throws MissingParameterException
+     * @throws ServerResponseException
+     */
+    public function update(object $category): void
     {
         parent::updateIndex($this->dataDto($category));
     }
