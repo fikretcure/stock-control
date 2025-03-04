@@ -119,4 +119,15 @@ class ElasticService
         ];
         return $this->client->update($params);
     }
+
+    public function deleteRow($id){
+        $params = [
+            'index' => $this->index,
+            'id' => $id,
+            'body' => ['doc' => $body],
+        ];
+        return $this->client->update($params);
+
+
+    }
 }
