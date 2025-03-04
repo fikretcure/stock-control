@@ -23,4 +23,24 @@ class CategoryElastic extends ElasticService
         ];
         parent::index($params);
     }
+
+
+
+
+    public function update(object $category)
+    {
+
+        $params = [
+            'id' => $category->id,
+            'name' => $category->name,
+            'alias' => $category->alias,
+            'reg_no' => $category->reg_no,
+            'all_parents' => $category->all_parents,
+            'created_at' => $category->created_at,
+        ];
+
+
+
+        return  parent::updateIndex($params);
+    }
 }

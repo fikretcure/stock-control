@@ -108,4 +108,15 @@ class ElasticService
         );
 
     }
+
+
+    public function updateIndex($body = [])
+    {
+        $params = [
+            'index' => $this->index,
+            'id' => $body['id'],
+            'body' => ['doc' => $body],
+        ];
+        return $this->client->update($params);
+    }
 }

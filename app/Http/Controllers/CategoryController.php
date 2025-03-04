@@ -44,7 +44,9 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        //
+        $category->update($request->validated());
+        $this->categoryElastic->update($category->refresh());
+        return $this->success( $category->refresh());
     }
 
     /**
