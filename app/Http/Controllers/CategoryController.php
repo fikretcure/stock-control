@@ -22,7 +22,6 @@ class CategoryController extends Controller
     public function index()
     {
         return $this->success($this->categoryElastic->search());
-
     }
 
     /**
@@ -33,12 +32,9 @@ class CategoryController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Category $category)
+    public function show($company)
     {
-        //
+        return $this->success($this->categoryElastic->show($company));
     }
 
     /**

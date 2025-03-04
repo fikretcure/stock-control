@@ -18,6 +18,15 @@ class ElasticService
     }
 
 
+    public function show( $id)
+    {
+        return $this->client->get([
+            'index' => $this->index,
+            'id' => $id
+        ])->asArray()['_source'];
+    }
+
+
 
     public function createIndex()
     {
