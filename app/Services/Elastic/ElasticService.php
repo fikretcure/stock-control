@@ -118,7 +118,7 @@ class ElasticService
      */
     public function search(): LengthAwarePaginator
     {
-        $page = request()->get('page', 1); // Varsayılan olarak 1. sayfa
+        $page = request()->get('page', 1);
         $perPage = request()->get('per_page', 10);
         $from = ($page - 1) * $perPage;
 
@@ -128,13 +128,20 @@ class ElasticService
 
 
         $param = [
-            'index' => 'categories',
+            'index' => $this->index,
             'body' => [
                 'from' => $from,
                 'size' => $perPage,
                 'sort' => [
-                    $sort => [ // .keyword alt alanını kullanıyoruz
+                    $sort => [
                         'order' => $order,
+                    ],
+                ],
+                'query' => [
+                    'bool' => [
+                        'must_not' => [
+                            ['exists' => ['field' => 'deleted_at']],
+                        ],
                     ],
                 ],
             ],
