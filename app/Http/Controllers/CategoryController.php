@@ -29,7 +29,9 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        //
+        $category = Category::create($request->validated());
+        $this->categoryElastic->store($category);
+        return $this->success($category);
     }
 
     public function show($company)
