@@ -21,6 +21,7 @@ class CategoryElastic extends ElasticService
             'parent' => $category->parent,
             'all_parents' => $category->all_parents,
             'created_at' => $category->created_at,
+            'deleted_at' => $category->deleted_at,
         ];
     }
 
