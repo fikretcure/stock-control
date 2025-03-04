@@ -15,7 +15,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Redis::connection()->flushdb();
+
+        if(env('APP_ENV') != 'local') {
+            Redis::connection()->flushdb();
+        }
+
 
 
             try {
