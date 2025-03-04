@@ -12,6 +12,9 @@ class Category extends Model
     /** @use HasFactory<\Database\Factories\CategoryFactory> */
     use HasFactory , SoftDeletes;
 
+    protected $appends = ['all_parents'];
+
+
     protected static function boot()
     {
         parent::boot();
@@ -24,5 +27,22 @@ class Category extends Model
 
     public function childiren(){
         return $this->hasMany(Category::class,'category_id');
+    }
+
+    public function getAllParentsAttribute()
+    {
+        $categories = [];
+        $category = $this;
+
+        while ($category->category_id) {
+            $category = Category::find($category->category_id);
+            if ($category) {
+                $categories[] = $category->name;
+            } else {
+                break;
+            }
+        }
+
+        return implode(' > ', array_reverse($categories));
     }
 }

@@ -18,7 +18,7 @@ class CategoryElastic extends ElasticService
             'name' => $category->name,
             'alias' => $category->alias,
             'reg_no' => $category->reg_no,
-            'category_id' => $category->category_id,
+            'all_parents' => $category->all_parents,
             'created_at' => $category->created_at,
         ];
         parent::index($params);
