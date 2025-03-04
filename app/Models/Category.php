@@ -50,4 +50,9 @@ class Category extends Model
 
         return empty($categories) ? null : implode(' > ', array_reverse($categories));
     }
+
+    public function parent()
+    {
+        return $this->belongsTo(Category::class, 'category_id')->select('id', 'name','reg_no');
+    }
 }
