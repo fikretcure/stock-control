@@ -43,6 +43,6 @@ class Category extends Model
             }
         }
 
-        return implode(' > ', array_reverse($categories));
+        return empty($categories) ? null : implode(' > ', array_reverse($categories));
     }
 }
