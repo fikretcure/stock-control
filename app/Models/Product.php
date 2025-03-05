@@ -12,6 +12,11 @@ class Product extends Model
     /** @use HasFactory<\Database\Factories\ProductFactory> */
     use HasFactory , SoftDeletes;
 
+    protected $fillable = [
+        'name',
+        'alias',
+        'category_id'
+    ];
 
     protected static function boot()
     {
