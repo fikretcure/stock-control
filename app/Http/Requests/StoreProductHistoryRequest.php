@@ -48,6 +48,10 @@ class StoreProductHistoryRequest extends FormRequest
                 Rule::date()->format('Y-m-d H:i'),
                 'before_or_equal:now',
                 'after_or_equal:' . Carbon::now()->subMonth()->format('Y-m-d H:i'),
+            ],
+            'note' => [
+                'nullable',
+                'string',
             ]
         ];
     }
