@@ -98,7 +98,7 @@ class ElasticService
      * @throws MissingParameterException
      * @throws ServerResponseException
      */
-    public function index(array $body = []): void
+    public function storeIndex(array $body = []): void
     {
         $body['created_at'] = Carbon::parse($body['created_at'])->toIso8601String();
         $params = [

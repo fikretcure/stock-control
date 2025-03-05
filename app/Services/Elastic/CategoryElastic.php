@@ -50,7 +50,7 @@ class CategoryElastic extends ElasticService
      */
     public function store(object $category): void
     {
-        parent::index($this->dataDto($category));
+        parent::storeIndex($this->dataDto($category));
     }
 
 

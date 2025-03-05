@@ -37,6 +37,6 @@ class ProductElastic extends ElasticService
             'reg_no' => $product->reg_no,
             'created_at' => $product->created_at,
         ];
-        parent::index($params);
+        parent::storeIndex($params);
     }
 }
