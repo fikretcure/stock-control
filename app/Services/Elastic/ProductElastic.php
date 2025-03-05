@@ -35,8 +35,25 @@ class ProductElastic extends ElasticService
             'id' => $product->id,
             'name' => $product->name,
             'reg_no' => $product->reg_no,
+            'alias' => $product->alias,
+            'category_id' => $product->category_id,
             'created_at' => $product->created_at,
+            'delete_at' => $product->delete_at,
         ];
         parent::storeIndex($params);
+    }
+
+    public function update(object $product): void
+    {
+        $params = [
+            'id' => $product->id,
+            'name' => $product->name,
+            'reg_no' => $product->reg_no,
+            'alias' => $product->alias,
+            'category_id' => $product->category_id,
+            'created_at' => $product->created_at,
+            'delete_at' => $product->delete_at,
+        ];
+        parent::updateIndex($params);
     }
 }
