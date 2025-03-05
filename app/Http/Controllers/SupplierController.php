@@ -33,15 +33,17 @@ class SupplierController extends Controller
      */
     public function store(StoreSupplierRequest $request)
     {
-        //
+        $supplier = Supplier::create($request->validated());
+        $this->supplierElastic->store($supplier);
+        return $this->success($supplier);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Supplier $supplier)
+    public function show($supplier)
     {
-        //
+        return $this->success($this->supplierElastic->show($supplier));
     }
 
     /**
@@ -49,7 +51,9 @@ class SupplierController extends Controller
      */
     public function update(UpdateSupplierRequest $request, Supplier $supplier)
     {
-        //
+        $supplier->update($request->validated());
+        $this->supplierElastic->update($supplier->refresh());
+        return $this->success($supplier->refresh());
     }
 
     /**
@@ -57,6 +61,8 @@ class SupplierController extends Controller
      */
     public function destroy(Supplier $supplier)
     {
-        //
+        $supplier->delete();
+        $this->supplierElastic->update($supplier->refresh());
+        return $this->success($supplier->refresh());
     }
 }

@@ -9,10 +9,9 @@ use Illuminate\Support\Str;
 
 class Supplier extends Model
 {
-    /** @use HasFactory<\Database\Factories\SupplierFactory> */
     use HasFactory , SoftDeletes;
 
-
+    protected $fillable = ['name'];
     protected static function boot()
     {
         parent::boot();
