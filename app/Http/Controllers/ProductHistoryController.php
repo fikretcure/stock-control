@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreProductHistoryRequest;
 
 class ProductHistoryController extends Controller
 {
-    public function store(){
-            return 1;
+    public function store(StoreProductHistoryRequest $request){
+            return $request->validated();
     }
 }

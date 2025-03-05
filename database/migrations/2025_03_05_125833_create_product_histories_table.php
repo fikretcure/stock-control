@@ -20,8 +20,7 @@ return new class extends Migration
             $table->integer('before');
             $table->integer('after');
             $table->integer('change');
-            $table->boolean('change_type');
-            $table->string('description');
+            $table->integer('change_type');
             $table->string('note')->nullable();
             $table->dateTime('action_at');
             $table->timestamps();
