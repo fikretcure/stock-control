@@ -33,6 +33,7 @@ class SupplierElastic extends ElasticService
             'name' => $supplier->name,
             'reg_no' => $supplier->reg_no,
             'created_at' => $supplier->created_at,
+            'deleted_at' => $supplier->deleted_at,
         ];
     }
 
