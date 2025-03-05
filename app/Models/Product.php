@@ -27,4 +27,9 @@ class Product extends Model
             $product->reg_no ='P' . Str::padLeft($max_id, 6, 0);
         });
     }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class)->select('id','name','alias','reg_no');
+    }
 }
