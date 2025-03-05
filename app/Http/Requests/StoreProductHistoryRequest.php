@@ -37,6 +37,7 @@ class StoreProductHistoryRequest extends FormRequest
             'change' => [
                 'required',
                 'integer',
+                'min:1',
             ],
             'change_type' =>  [
                 'required',
