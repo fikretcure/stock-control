@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enums\ProductHistoryDescriptionEnum;
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
@@ -43,7 +44,9 @@ class StoreProductHistoryRequest extends FormRequest
             ],
             'action_at' => [
                 'required',
-                'datetime'
+                Rule::date()->format('Y-m-d H:i'),
+                'before_or_equal:now',
+                'after_or_equal:' . Carbon::now()->subMonth()->format('Y-m-d H:i'),
             ]
         ];
     }
