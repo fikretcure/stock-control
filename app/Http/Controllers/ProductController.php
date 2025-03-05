@@ -40,7 +40,7 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show($product)
     {
         return $this->success($this->productElastic->show($product));
 
