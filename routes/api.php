@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SupplierController;
 use App\Http\Middleware\AuthMiddleware;
 use Illuminate\Support\Facades\Route;
 
@@ -14,4 +15,5 @@ Route::middleware(AuthMiddleware::class)->group(function () {
 
     Route::apiResource('categories', CategoryController::class);
     Route::apiResource('products',ProductController::class);
+    Route::apiResource('suppliers',SupplierController::class);
 });
