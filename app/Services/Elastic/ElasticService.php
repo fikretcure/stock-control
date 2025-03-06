@@ -68,9 +68,9 @@ class ElasticService
                 'mappings' => [
                     'properties' => [
                         'id' => ['type' => 'integer'],
-                        'created_at' => ['type' => 'date',  "format"=> "yyyy-MM-dd HH:mm:ss"],
-                        'updated_at' => ['type' => 'date', "format"=> "yyyy-MM-dd HH:mm:ss"],
-                        'deleted_at' => ['type' => 'date', "format"=> "yyyy-MM-dd HH:mm:ss"],
+                        'created_at' => ['type' => 'date'],
+                        'updated_at' => ['type' => 'date'],
+                        'deleted_at' => ['type' => 'date'],
                     ],
                 ],
             ],
@@ -102,7 +102,6 @@ class ElasticService
      */
     public function storeIndex(array $body = []): void
     {
-        $body['created_at'] = Carbon::parse($body['created_at'])->toIso8601String();
         $params = [
             'index' => $this->index,
             'id' => $body['id'],

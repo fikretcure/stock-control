@@ -26,7 +26,7 @@ class CategoryController extends Controller
     }
 
 
-    public function index(): JsonResponse
+    public function index()
     {
         return $this->success($this->categoryElastic->search());
     }

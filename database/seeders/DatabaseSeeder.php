@@ -17,25 +17,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-
-        if(env('APP_ENV') != 'local') {
+        if (env('APP_ENV') != 'local') {
             Redis::connection()->flushdb();
         }
 
+        try {
+            new ProductElastic()->deleteIndex();
+            new CategoryElastic()->deleteIndex();
+            new SupplierElastic()->deleteIndex();
+            new ProductHistoryElastic()->deleteIndex();
+        } catch (\Exception $e) {
+        }
 
-
-            try {
-                new ProductElastic()->deleteIndex();
-                new CategoryElastic()->deleteIndex();
-                new SupplierElastic()->deleteIndex();
-                new ProductHistoryElastic()->deleteIndex();
-            } catch (\Exception $e) {
-            }
-
-            new ProductElastic()->createIndex();
-            new CategoryElastic()->createIndex();
-            new SupplierElastic()->createIndex();
-            new ProductHistoryElastic()->createIndex();
+        new ProductElastic()->createIndex();
+        new CategoryElastic()->createIndex();
+        new SupplierElastic()->createIndex();
+        new ProductHistoryElastic()->createIndex();
 
 
         $this->call([
