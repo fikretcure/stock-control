@@ -21,6 +21,7 @@ Route::middleware(AuthMiddleware::class)->group(function () {
 
     Route::controller(ProductHistoryController::class)->group(function () {
        Route::post('products/{product}/history', 'store');
+       Route::get('products/{product}/history', 'index');
 
     });
 });
