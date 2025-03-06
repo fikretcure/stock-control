@@ -6,11 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use App\Observers\CategoryObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
+#[ObservedBy([CategoryObserver::class])]
 class Category extends Model
 {
     /** @use HasFactory<\Database\Factories\CategoryFactory> */
-    use HasFactory , SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $appends = ['all_parents'];
 
@@ -20,18 +23,20 @@ class Category extends Model
         'alias'
     ];
 
+
     protected static function boot()
     {
         parent::boot();
 
         static::creating(function ($product) {
-            $max_id =Category::withTrashed()->max('id')+1;
-            $product->reg_no ='C' . Str::padLeft($max_id, 6, 0);
+            $max_id = Category::withTrashed()->max('id') + 1;
+            $product->reg_no = 'C' . Str::padLeft($max_id, 6, 0);
         });
     }
 
-    public function childiren(){
-        return $this->hasMany(Category::class,'category_id');
+    public function childiren()
+    {
+        return $this->hasMany(Category::class, 'category_id');
     }
 
     public function getAllParentsAttribute()
@@ -53,6 +58,6 @@ class Category extends Model
 
     public function parent()
     {
-        return $this->belongsTo(Category::class, 'category_id')->select('id', 'name','reg_no');
+        return $this->belongsTo(Category::class, 'category_id')->select('id', 'name', 'reg_no');
     }
 }

@@ -31,6 +31,11 @@ class StoreCategoryRequest extends FormRequest
             'category_id'=>[
                 'nullable',
                 Rule::exists('categories','id')
+            ],
+            'alias' => [
+                'nullable',
+                'string',
+                Rule::unique('categories')
             ]
         ];
     }
