@@ -68,9 +68,9 @@ class ElasticService
                 'mappings' => [
                     'properties' => [
                         'id' => ['type' => 'integer'],
-                        'created_at' => ['type' => 'date'],
-                        'updated_at' => ['type' => 'date'],
-                        'deleted_at' => ['type' => 'date'],
+                        'created_at' => ['type' => 'date',  "format"=> "yyyy-MM-dd HH:mm:ss"],
+                        'updated_at' => ['type' => 'date', "format"=> "yyyy-MM-dd HH:mm:ss"],
+                        'deleted_at' => ['type' => 'date', "format"=> "yyyy-MM-dd HH:mm:ss"],
                     ],
                 ],
             ],

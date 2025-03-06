@@ -64,10 +64,8 @@ class CategoryController extends Controller
         DB::beginTransaction();
         try {
             $category->update($request->validated());
-            DB::commit();
             return $this->success($category->refresh());
         } catch (\Exception $e) {
-            DB::rollBack();
             return $this->fail($e->getMessage(), 500);
         }
     }
@@ -82,10 +80,8 @@ class CategoryController extends Controller
         DB::beginTransaction();
         try {
             $category->delete();
-            DB::commit();
             return $this->success($category->refresh());
         } catch (\Exception $e) {
-            DB::rollBack();
             return $this->fail($e->getMessage(), 500);
         }
     }

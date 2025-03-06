@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use App\Services\Elastic\CategoryElastic;
 
@@ -24,8 +25,8 @@ class CategoryObserver
      */
     public function created(Category $category): void
     {
+        $category = CategoryResource::make($category);
         $this->categoryElastic->storeIndex(collect($category)->toArray());
-
     }
 
     /**
@@ -33,6 +34,7 @@ class CategoryObserver
      */
     public function updated(Category $category): void
     {
+        $category = CategoryResource::make($category);
         $this->categoryElastic->updateIndex(collect($category)->toArray());
     }
 
@@ -41,6 +43,7 @@ class CategoryObserver
      */
     public function deleted(Category $category): void
     {
+        $category = CategoryResource::make($category);
         $this->categoryElastic->updateIndex(collect($category)->toArray());
     }
 
