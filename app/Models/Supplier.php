@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Observers\SupplierObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
+#[ObservedBy([SupplierObserver::class])]
 class Supplier extends Model
 {
     use HasFactory , SoftDeletes;

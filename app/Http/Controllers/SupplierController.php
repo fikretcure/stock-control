@@ -4,9 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreSupplierRequest;
 use App\Http\Requests\UpdateSupplierRequest;
+use App\Http\Resources\SupplierResource;
 use App\Models\Supplier;
 use App\Services\Elastic\SupplierElastic;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
+/**
+ *
+ */
 class SupplierController extends Controller
 {
 
@@ -16,53 +24,81 @@ class SupplierController extends Controller
     public function __construct(
         public SupplierElastic $supplierElastic,
     ){
-
+        DB::beginTransaction();
     }
 
 
     /**
-     * Display a listing of the resource.
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        return $this->success($this->supplierElastic->search());
+        try {
+            return $this->success($this->supplierElastic->search());
+        } catch (\Exception $e) {
+            return $this->fail($e->getMessage(), 500);
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreSupplierRequest $request)
-    {
-        $supplier = Supplier::create($request->validated());
-        $this->supplierElastic->store($supplier);
-        return $this->success($supplier);
-    }
 
     /**
-     * Display the specified resource.
+     * @param StoreSupplierRequest $request
+     * @return JsonResponse
      */
-    public function show($supplier)
+    public function store(StoreSupplierRequest $request): JsonResponse
     {
-        return $this->success($this->supplierElastic->show($supplier));
+        try {
+            $supplier = Supplier::create($request->validated());
+            return $this->success(SupplierResource::make($supplier));
+        } catch (\Exception $e) {
+            return $this->fail($e->getMessage(), 500);
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateSupplierRequest $request, Supplier $supplier)
-    {
-        $supplier->update($request->validated());
-        $this->supplierElastic->update($supplier->refresh());
-        return $this->success($supplier->refresh());
-    }
 
     /**
-     * Remove the specified resource from storage.
+     * @param $supplier
+     * @return JsonResponse
      */
-    public function destroy(Supplier $supplier)
+    public function show($supplier): JsonResponse
     {
-        $supplier->delete();
-        $this->supplierElastic->update($supplier->refresh());
-        return $this->success($supplier->refresh());
+        try {
+            return $this->success($this->supplierElastic->show($supplier));
+        } catch (\Exception $e) {
+            return $this->fail($e->getMessage(), 500);
+        }
+    }
+
+
+    /**
+     * @param UpdateSupplierRequest $request
+     * @param Supplier $supplier
+     * @return JsonResponse
+     */
+    public function update(UpdateSupplierRequest $request, Supplier $supplier): JsonResponse
+    {
+        try {
+            $supplier->update($request->validated());
+            return $this->success(SupplierResource::make($supplier->refresh()));
+        } catch (\Exception $e) {
+            return $this->fail($e->getMessage(), 500);
+        }
+    }
+
+
+    /**
+     * @param Supplier $supplier
+     * @return JsonResponse
+     */
+    public function destroy(Supplier $supplier): JsonResponse
+    {
+        try {
+            $supplier->delete();
+            return $this->success(SupplierResource::make($supplier->refresh()));
+        } catch (\Exception $e) {
+            return $this->fail($e->getMessage(), 500);
+        }
     }
 }

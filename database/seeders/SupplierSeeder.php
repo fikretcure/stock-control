@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Supplier;
-use App\Services\Elastic\SupplierElastic;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -21,9 +20,5 @@ class SupplierSeeder extends Seeder
         Supplier::create([
             'name' => 'Direnc Net'
         ]);
-
-        Supplier::query()->get()->each(function ($category) {
-            new SupplierElastic()->store($category);
-        });
     }
 }
