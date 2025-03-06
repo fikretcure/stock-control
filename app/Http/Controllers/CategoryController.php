@@ -9,6 +9,8 @@ use App\Models\Category;
 use App\Services\Elastic\CategoryElastic;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 /**
  *
@@ -22,13 +24,22 @@ class CategoryController extends Controller
         public CategoryElastic $categoryElastic,
     )
     {
-
+        DB::beginTransaction();
     }
 
 
-    public function index()
+    /**
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function index(): JsonResponse
     {
-        return $this->success($this->categoryElastic->search());
+        try {
+            return $this->success($this->categoryElastic->search());
+        } catch (\Exception $e) {
+            return $this->fail($e->getMessage(), 500);
+        }
     }
 
 
@@ -36,9 +47,8 @@ class CategoryController extends Controller
      * @param StoreCategoryRequest $request
      * @return JsonResponse
      */
-    public function store(StoreCategoryRequest $request)
+    public function store(StoreCategoryRequest $request): JsonResponse
     {
-        DB::beginTransaction();
         try {
             $category = Category::create($request->validated());
             return $this->success(CategoryResource::make($category));
@@ -48,9 +58,17 @@ class CategoryController extends Controller
     }
 
 
+    /**
+     * @param $company
+     * @return JsonResponse
+     */
     public function show($company): JsonResponse
     {
-        return $this->success($this->categoryElastic->show($company));
+        try {
+            return $this->success($this->categoryElastic->show($company));
+        } catch (\Exception $e) {
+            return $this->fail($e->getMessage(), 500);
+        }
     }
 
 
@@ -61,10 +79,9 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category): JsonResponse
     {
-        DB::beginTransaction();
         try {
             $category->update($request->validated());
-            return $this->success($category->refresh());
+            return $this->success(CategoryResource::make($category->refresh()));
         } catch (\Exception $e) {
             return $this->fail($e->getMessage(), 500);
         }
@@ -77,10 +94,9 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category): JsonResponse
     {
-        DB::beginTransaction();
         try {
             $category->delete();
-            return $this->success($category->refresh());
+            return $this->success(CategoryResource::make($category->refresh()));
         } catch (\Exception $e) {
             return $this->fail($e->getMessage(), 500);
         }
