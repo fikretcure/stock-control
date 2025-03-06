@@ -3,10 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
-use App\Models\Company;
 use App\Models\Product;
-use App\Services\Elastic\CompanyElastic;
-use App\Services\Elastic\ProductElastic;
 use Illuminate\Database\Seeder;
 
 class ProductSeeder extends Seeder
@@ -54,13 +51,9 @@ class ProductSeeder extends Seeder
 
         foreach ($productNames as $index => $productName) {
             Product::create([
-               'name' => $productName,
+                'name' => $productName,
                 'category_id' => Category::query()->inRandomOrder()->first()->id,
             ]);
         }
-
-        Product::query()->get()->each(function ($product) {
-            new ProductElastic()->store($product);
-        });
     }
 }
