@@ -26,7 +26,6 @@ class CategoryController extends Controller
     }
 
 
-
     public function index(): JsonResponse
     {
         return $this->success($this->categoryElastic->search());
@@ -37,16 +36,13 @@ class CategoryController extends Controller
      * @param StoreCategoryRequest $request
      * @return JsonResponse
      */
-    public function store(StoreCategoryRequest $request): JsonResponse
+    public function store(StoreCategoryRequest $request)
     {
         DB::beginTransaction();
         try {
             $category = Category::create($request->validated());
-            $category = CategoryResource::make($category);
-            DB::commit();
-            return $this->success($category);
+            return $this->success(CategoryResource::make($category));
         } catch (\Exception $e) {
-            DB::rollBack();
             return $this->fail($e->getMessage(), 500);
         }
     }

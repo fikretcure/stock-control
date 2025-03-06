@@ -69,6 +69,8 @@ class ElasticService
                     'properties' => [
                         'id' => ['type' => 'integer'],
                         'created_at' => ['type' => 'date'],
+                        'updated_at' => ['type' => 'date'],
+                        'deleted_at' => ['type' => 'date'],
                     ],
                 ],
             ],

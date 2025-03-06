@@ -22,6 +22,7 @@ class Category extends Model
         'alias'
     ];
 
+
     protected static function boot()
     {
         parent::boot();
