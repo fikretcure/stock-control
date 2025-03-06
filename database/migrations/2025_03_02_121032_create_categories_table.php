@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
+            $table->string('alias')->nullable()->unique();
             $table->foreignIdFor(\App\Models\Category::class)->nullable()->constrained();
             $table->string('reg_no')->unique();
             $table->timestamps();

@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreCategoryRequest extends FormRequest
+class StoreSupplierRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,13 +25,8 @@ class StoreCategoryRequest extends FormRequest
         return [
             'name' => [
                 'required',
-                'string',
-                Rule::unique('categories')
+                Rule::unique('suppliers', 'name')
             ],
-            'category_id'=>[
-                'nullable',
-                Rule::exists('categories','id')
-            ]
         ];
     }
 }

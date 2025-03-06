@@ -55,7 +55,6 @@ class ProductSeeder extends Seeder
         foreach ($productNames as $index => $productName) {
             Product::create([
                'name' => $productName,
-                'quantity'=> rand(1, 100),
                 'category_id' => Category::query()->inRandomOrder()->first()->id,
             ]);
         }

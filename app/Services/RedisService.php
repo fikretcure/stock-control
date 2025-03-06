@@ -4,14 +4,26 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Redis;
 
+/**
+ *
+ */
 class RedisService
 {
-    public function get($data)
+    /**
+     * @param $data
+     * @return mixed
+     */
+    public function get($data): mixed
     {
         return json_decode(Redis::get($data), true);
     }
 
-    public function set($key, $data)
+    /**
+     * @param $key
+     * @param $data
+     * @return void
+     */
+    public function set($key, $data): void
     {
         Redis::set($key, $data);
     }

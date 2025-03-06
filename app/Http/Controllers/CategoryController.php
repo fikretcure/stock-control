@@ -6,9 +6,16 @@ use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use App\Services\Elastic\CategoryElastic;
+use Illuminate\Http\JsonResponse;
 
+/**
+ *
+ */
 class CategoryController extends Controller
 {
+    /**
+     * @param CategoryElastic $categoryElastic
+     */
     public function __construct(
         public CategoryElastic $categoryElastic,
     ){
@@ -17,43 +24,56 @@ class CategoryController extends Controller
 
 
     /**
-     * Display a listing of the resource.
+     * @return JsonResponse
      */
-    public function index()
+    public function index(): JsonResponse
     {
         return $this->success($this->categoryElastic->search());
+    }
 
+
+    /**
+     * @param StoreCategoryRequest $request
+     * @return JsonResponse
+     */
+    public function store(StoreCategoryRequest $request): JsonResponse
+    {
+        $category = Category::create($request->validated());
+        $this->categoryElastic->store($category);
+        return $this->success($category);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @param $company
+     * @return JsonResponse
      */
-    public function store(StoreCategoryRequest $request)
+    public function show($company): JsonResponse
     {
-        //
+        return $this->success($this->categoryElastic->show($company));
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Category $category)
-    {
-        //
-    }
 
     /**
-     * Update the specified resource in storage.
+     * @param UpdateCategoryRequest $request
+     * @param Category $category
+     * @return JsonResponse
      */
-    public function update(UpdateCategoryRequest $request, Category $category)
+    public function update(UpdateCategoryRequest $request, Category $category): JsonResponse
     {
-        //
+        $category->update($request->validated());
+        $this->categoryElastic->update($category->refresh());
+        return $this->success($category->refresh());
     }
 
+
     /**
-     * Remove the specified resource from storage.
+     * @param Category $category
+     * @return JsonResponse
      */
-    public function destroy(Category $category)
+    public function destroy(Category $category): JsonResponse
     {
-        //
+        $category->delete();
+        $this->categoryElastic->update($category->refresh());
+        return $this->success($category->refresh());
     }
 }

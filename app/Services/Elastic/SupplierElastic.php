@@ -2,7 +2,7 @@
 
 namespace App\Services\Elastic;
 
-use App\Models\Category;
+use App\Models\Supplier;
 use Elastic\Elasticsearch\Exception\AuthenticationException;
 use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Elastic\Elasticsearch\Exception\MissingParameterException;
@@ -11,32 +11,29 @@ use Elastic\Elasticsearch\Exception\ServerResponseException;
 /**
  *
  */
-class CategoryElastic extends ElasticService
+class SupplierElastic extends ElasticService
 {
 
     /**
      * @throws AuthenticationException
      */
     public function __construct(){
-        parent::__construct(new Category()->getTable());
+        parent::__construct(new Supplier()->getTable());
     }
 
 
     /**
-     * @param object $category
+     * @param object $supplier
      * @return array
      */
-    protected function dataDto(object $category): array
+    protected function dataDto(object $supplier): array
     {
         return [
-            'id' => $category->id,
-            'name' => $category->name,
-            'alias' => $category->alias,
-            'reg_no' => $category->reg_no,
-            'parent' => $category->parent,
-            'all_parents' => $category->all_parents,
-            'created_at' => $category->created_at,
-            'deleted_at' => $category->deleted_at,
+            'id' => $supplier->id,
+            'name' => $supplier->name,
+            'reg_no' => $supplier->reg_no,
+            'created_at' => $supplier->created_at,
+            'deleted_at' => $supplier->deleted_at,
         ];
     }
 

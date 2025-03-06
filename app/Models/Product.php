@@ -12,6 +12,11 @@ class Product extends Model
     /** @use HasFactory<\Database\Factories\ProductFactory> */
     use HasFactory , SoftDeletes;
 
+    protected $fillable = [
+        'name',
+        'alias',
+        'category_id'
+    ];
 
     protected static function boot()
     {
@@ -21,5 +26,10 @@ class Product extends Model
             $max_id =Product::withTrashed()->max('id')+1;
             $product->reg_no ='P' . Str::padLeft($max_id, 6, 0);
         });
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class)->select('id','name','alias','reg_no');
     }
 }

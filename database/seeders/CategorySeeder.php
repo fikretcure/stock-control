@@ -14,15 +14,19 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $category  =  Category::create([
-            'name'  => 'otomabil',
+            'name'  => 'Binek Arac',
         ]);
 
 
         $category->childiren()->create([
-            'name'  => 'auid'
+            'name'  => 'Auid'
         ]);
         $category->childiren()->create([
             'name'  => 'Toyota'
+        ]);
+
+        $category->childiren()->create([
+            'name'  => 'Bmw'
         ]);
 
 
