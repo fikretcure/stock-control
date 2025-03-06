@@ -49,9 +49,5 @@ class CategorySeeder extends Seeder
         $category->childiren()->create([
             'name'  => 'Gerilim'
         ]);
-
-        Category::query()->get()->each(function ($category) {
-            new CategoryElastic()->store($category);
-        });
     }
 }
