@@ -23,9 +23,20 @@ class ProductHistory extends Model
         'note'
     ];
 
+
+    protected $casts = [
+        'action_at' => 'datetime:Y-m-d H:i:s',
+    ];
+
     public function supplier(){
         return $this->belongsTo(Supplier::class)->select(['id', 'name','reg_no']);
     }
+
+
+    public function product(){
+        return $this->belongsTo(Product::class)->select(['id', 'name','reg_no']);
+    }
+
 
     public function getChangeTypeEnumAttribute()
     {
