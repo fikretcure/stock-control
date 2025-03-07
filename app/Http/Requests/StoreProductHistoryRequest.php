@@ -28,7 +28,7 @@ class StoreProductHistoryRequest extends FormRequest
         return [
             'supplier_id' => [
                 'nullable',
-                Rule::unique('suppliers', 'id')
+                Rule::exists('suppliers', 'id')
             ],
             'supplier_reg_no' => [
                 'nullable',
@@ -39,7 +39,7 @@ class StoreProductHistoryRequest extends FormRequest
                 'integer',
                 'min:1',
             ],
-            'change_type' =>  [
+            'change_type' => [
                 'required',
                 new Enum(ProductHistoryDescriptionEnum::class),
             ],

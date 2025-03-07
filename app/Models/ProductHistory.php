@@ -20,7 +20,8 @@ class ProductHistory extends Model
         'after',
         'action_at',
         'change_type',
-        'note'
+        'note',
+        'supplier_id'
     ];
 
 
@@ -28,18 +29,20 @@ class ProductHistory extends Model
         'action_at' => 'datetime:Y-m-d H:i:s',
     ];
 
-    public function supplier(){
-        return $this->belongsTo(Supplier::class)->select(['id', 'name','reg_no']);
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class)->select(['id', 'name', 'reg_no']);
     }
 
 
-    public function product(){
-        return $this->belongsTo(Product::class)->select(['id', 'name','reg_no']);
+    public function product()
+    {
+        return $this->belongsTo(Product::class)->select(['id', 'name', 'reg_no']);
     }
 
 
     public function getChangeTypeEnumAttribute()
     {
-       return ProductHistoryDescriptionEnum::from($this->change_type)->name;
+        return ProductHistoryDescriptionEnum::from($this->change_type)->name;
     }
 }
