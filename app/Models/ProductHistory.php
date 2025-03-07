@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use App\Enums\ProductHistoryDescriptionEnum;
+use App\Observers\ProductHistoryObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+#[ObservedBy([ProductHistoryObserver::class])]
 class ProductHistory extends Model
 {
     use SoftDeletes;

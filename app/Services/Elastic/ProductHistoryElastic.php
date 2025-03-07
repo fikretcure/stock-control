@@ -21,45 +21,4 @@ class ProductHistoryElastic extends ElasticService
     public function __construct(){
         parent::__construct(new ProductHistory()->getTable());
     }
-
-
-    /**
-     * @param object $supplier
-     * @return array
-     */
-    protected function dataDto(object $supplier): array
-    {
-        return [
-            'id' => $supplier->id,
-
-            'created_at' => $supplier->created_at,
-            'deleted_at' => $supplier->deleted_at,
-        ];
-    }
-
-
-    /**
-     * @param object $category
-     * @return void
-     * @throws ClientResponseException
-     * @throws MissingParameterException
-     * @throws ServerResponseException
-     */
-    public function store(object $category): void
-    {
-        parent::storeIndex($this->dataDto($category));
-    }
-
-
-    /**
-     * @param object $category
-     * @return void
-     * @throws ClientResponseException
-     * @throws MissingParameterException
-     * @throws ServerResponseException
-     */
-    public function update(object $category): void
-    {
-        parent::updateIndex($this->dataDto($category));
-    }
 }
