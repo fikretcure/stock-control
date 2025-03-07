@@ -33,7 +33,8 @@ class ProductHistoryObserver
      */
     public function updated(ProductHistory $productHistory): void
     {
-        //
+        $productHistory = ProductHistoryResource::make($productHistory);
+        $this->productHistoryElastic->updateIndex(collect($productHistory)->toArray());
     }
 
     /**

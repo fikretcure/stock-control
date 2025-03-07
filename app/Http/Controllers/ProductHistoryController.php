@@ -66,19 +66,50 @@ class ProductHistoryController extends Controller
         }
     }
 
+
     /**
      * @param UpdateProductHistoryRequest $request
      * @param $product_id
-     * @return mixed
+     * @param $history_id
+     * @return JsonResponse
      */
-    public function update(UpdateProductHistoryRequest $request, $product_id)
+    public function update(UpdateProductHistoryRequest $request, $product_id, $history_id): JsonResponse
     {
 
-        return $product_id;
+        $before = ProductHistory::where('product_id', $product_id)->where('id', '<', $history_id)->latest('id')->first()?->after ?? 0;
 
-        $before = ProductHistory::where('id', '<', 3)->latest('id')->first();
+        $after = match ($request->change_type) {
+            ProductHistoryDescriptionEnum::URUN_EKLENDI->value, ProductHistoryDescriptionEnum::GERI_DONUSUMDEN_URUN_EKLENDI->value => $before + $request->change,
+            default => $before - $request->change,
+        };
+
+        $history = ProductHistory::find($history_id);
+
+        $history->update($request->validated() + [
+                'before' => $before,
+                'after' => $after,
+            ]);
 
 
-        return $before;
+        $alt_idler = ProductHistory::where('product_id', $product_id)->where('id', '>', $history_id)->oldest('id')->get();
+
+
+        $alt_idler->each(function (ProductHistory $productHistory) {
+            $before = ProductHistory::where('product_id', $productHistory->product_id)->where('id', '<', $productHistory->id)->latest('id')->first()?->after ?? 0;
+
+            $after = match ($productHistory->change_type) {
+                ProductHistoryDescriptionEnum::URUN_EKLENDI->value, ProductHistoryDescriptionEnum::GERI_DONUSUMDEN_URUN_EKLENDI->value => $before + $productHistory->change,
+                default => $before - $productHistory->change,
+            };
+
+            $history = ProductHistory::find($productHistory->id);
+
+            $history->update([
+                'before' => $before,
+                'after' => $after,
+            ]);
+        });
+
+        return $this->success(ProductHistoryResource::make($history));
     }
 }
