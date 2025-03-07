@@ -111,7 +111,7 @@ class ElasticService
     }
 
 
-    public function search($where = [])
+    public function search($find)
     {
         $page = request()->get('page', 1);
         $perPage = request()->get('per_page', 10);
@@ -142,9 +142,16 @@ class ElasticService
             ],
         ];
 
+        if ($find) {
+            $param['body']['query']['bool']['must'][]=['term' => $find];
+        }
 
 
-        $param=  array_merge_recursive($param , $where);
+        if (request()->has('select')) {
+            foreach (request()->select as $field => $value) {
+                $param['body']['query']['bool']['must'][] = ['term' => [$field => $value]];
+            }
+        }
 
 
         $response = $this->client->search($param);

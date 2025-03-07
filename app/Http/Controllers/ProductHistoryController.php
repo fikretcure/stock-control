@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\DB;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
+/**
+ *
+ */
 class ProductHistoryController extends Controller
 {
 
@@ -35,14 +38,18 @@ class ProductHistoryController extends Controller
     public function index($product): JsonResponse
     {
         try {
-            $where['body']['query']['bool']['must']['term'] = ['product_id' => $product];
-            return $this->success($this->productHistoryElastic->search($where));
+            return $this->success($this->productHistoryElastic->search(['product_id' => $product]));
         } catch (\Exception $e) {
             return $this->fail($e->getMessage(), 500);
         }
     }
 
 
+    /**
+     * @param StoreProductHistoryRequest $request
+     * @param $id
+     * @return JsonResponse
+     */
     public function store(StoreProductHistoryRequest $request, $id)
     {
         try {
@@ -59,6 +66,11 @@ class ProductHistoryController extends Controller
         }
     }
 
+    /**
+     * @param UpdateProductHistoryRequest $request
+     * @param $product_id
+     * @return mixed
+     */
     public function update(UpdateProductHistoryRequest $request, $product_id)
     {
 
