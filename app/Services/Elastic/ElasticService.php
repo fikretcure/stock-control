@@ -111,7 +111,7 @@ class ElasticService
     }
 
 
-    public function search($find)
+    public function search(array $find = [])
     {
         $page = request()->get('page', 1);
         $perPage = request()->get('per_page', 10);
@@ -119,7 +119,6 @@ class ElasticService
 
         $sort = request()->get('sort', 'id');
         $order = request()->get('order', 'desc');
-
 
 
         $param = [
@@ -143,7 +142,7 @@ class ElasticService
         ];
 
         if ($find) {
-            $param['body']['query']['bool']['must'][]=['term' => $find];
+            $param['body']['query']['bool']['must'][] = ['term' => $find];
         }
 
 
@@ -161,7 +160,7 @@ class ElasticService
 
         $total = $response['hits']['total']['value'];
 
-        return  new LengthAwarePaginator(
+        return new LengthAwarePaginator(
             collect($hits),
             $total,
             $perPage,
