@@ -10,8 +10,6 @@ use App\Models\ProductHistory;
 use App\Services\Elastic\ProductHistoryElastic;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 
 /**
  *
@@ -75,7 +73,6 @@ class ProductHistoryController extends Controller
      */
     public function update(UpdateProductHistoryRequest $request, $product_id, $history_id): JsonResponse
     {
-
         $before = ProductHistory::where('product_id', $product_id)->where('id', '<', $history_id)->latest('id')->first()?->after ?? 0;
 
         $after = match ($request->change_type) {
@@ -84,7 +81,6 @@ class ProductHistoryController extends Controller
         };
 
         $history = ProductHistory::find($history_id);
-
         $history->update($request->validated() + [
                 'before' => $before,
                 'after' => $after,
@@ -92,7 +88,6 @@ class ProductHistoryController extends Controller
 
 
         $alt_idler = ProductHistory::where('product_id', $product_id)->where('id', '>', $history_id)->oldest('id')->get();
-
 
         $alt_idler->each(function (ProductHistory $productHistory) {
             $before = ProductHistory::where('product_id', $productHistory->product_id)->where('id', '<', $productHistory->id)->latest('id')->first()?->after ?? 0;
