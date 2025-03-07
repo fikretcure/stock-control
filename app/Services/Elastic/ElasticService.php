@@ -110,14 +110,8 @@ class ElasticService
         $this->client->index($params);
     }
 
-    /**
-     * @return LengthAwarePaginator
-     * @throws ClientResponseException
-     * @throws ServerResponseException
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function search(): LengthAwarePaginator
+
+    public function search($where = [])
     {
         $page = request()->get('page', 1);
         $perPage = request()->get('per_page', 10);
@@ -147,6 +141,10 @@ class ElasticService
                 ],
             ],
         ];
+
+
+
+        $param=  array_merge_recursive($param , $where);
 
 
         $response = $this->client->search($param);

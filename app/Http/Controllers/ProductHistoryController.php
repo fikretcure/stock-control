@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\ProductHistoryDescriptionEnum;
 use App\Http\Requests\StoreProductHistoryRequest;
+use App\Http\Requests\UpdateProductHistoryRequest;
 use App\Http\Resources\ProductHistoryResource;
 use App\Models\ProductHistory;
 use App\Services\Elastic\ProductHistoryElastic;
@@ -28,14 +29,14 @@ class ProductHistoryController extends Controller
 
 
     /**
+     * @param $product
      * @return JsonResponse
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
-    public function index(): JsonResponse
+    public function index($product): JsonResponse
     {
         try {
-            return $this->success($this->productHistoryElastic->search());
+            $where['body']['query']['bool']['must']['term'] = ['product_id' => $product];
+            return $this->success($this->productHistoryElastic->search($where));
         } catch (\Exception $e) {
             return $this->fail($e->getMessage(), 500);
         }
@@ -52,9 +53,20 @@ class ProductHistoryController extends Controller
             };
 
             $data = $request->validated() + ['product_id' => (int)$id, 'before' => $before, 'after' => $after];
-            return ProductHistoryResource::make(ProductHistory::create($data));
+            return $this->success(ProductHistoryResource::make(ProductHistory::create($data)));
         } catch (\Exception $e) {
             return $this->fail($e->getMessage(), 500);
         }
+    }
+
+    public function update(UpdateProductHistoryRequest $request, $product_id)
+    {
+
+        return $product_id;
+
+        $before = ProductHistory::where('id', '<', 3)->latest('id')->first();
+
+
+        return $before;
     }
 }
