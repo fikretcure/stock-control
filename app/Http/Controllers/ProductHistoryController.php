@@ -38,7 +38,7 @@ class ProductHistoryController extends Controller
     public function index($product): JsonResponse
     {
         try {
-            return $this->success($this->productHistoryElastic->search(['product_id' => $product]));
+            return $this->success($this->productHistoryElastic->search(find: ['product_id' => $product]));
         } catch (\Exception $e) {
             return $this->fail($e->getMessage(), 500);
         }
