@@ -121,6 +121,12 @@ class ElasticService
         $order = request()->get('order', 'desc');
 
 
+        if ($sort != 'id') {
+            if (in_array($sort, $this->sort_keywords)) {
+                $sort = $sort . '.keyword';
+            }
+        }
+
         $param = [
             'index' => $this->index,
             'body' => [
@@ -150,6 +156,16 @@ class ElasticService
             foreach (request()->select as $field => $value) {
                 $param['body']['query']['bool']['must'][] = ['term' => [$field => $value]];
             }
+        }
+
+
+        if (request()->has('search')) {
+            $param['body']['query']['bool']['must'][] = [
+                'query_string' => [
+                    'query' => '*' . request()->search . '*',
+                    'fuzziness' => 'AUTO'
+                ]
+            ];
         }
 
 

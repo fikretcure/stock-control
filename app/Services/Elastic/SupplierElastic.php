@@ -17,4 +17,7 @@ class SupplierElastic extends ElasticService
     public function __construct(){
         parent::__construct(new Supplier()->getTable());
     }
+
+
+    public array $sort_keywords = ['name','reg_no'];
 }
