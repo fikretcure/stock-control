@@ -14,6 +14,7 @@ return new class extends Migration
     {
         Schema::create('product_histories', function (Blueprint $table) {
             $table->id();
+            $table->string('reg_no')->unique();
             $table->foreignIdFor(Product::class)->constrained();
             $table->foreignIdFor(\App\Models\Supplier::class)->nullable()->constrained();
             $table->string('supplier_reg_no')->nullable();
