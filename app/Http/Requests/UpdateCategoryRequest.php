@@ -22,6 +22,10 @@ class UpdateCategoryRequest extends FormRequest
      */
     public function rules(): array
     {
+
+        $not_id = $this->category->getAllChildrenIds();
+        $not_id[] = $this->category->id;
+
         return [
             'name' => [
                 'required',
@@ -30,7 +34,8 @@ class UpdateCategoryRequest extends FormRequest
             ],
             'category_id'=>[
                 'nullable',
-                Rule::exists('categories','id')
+                Rule::exists('categories','id'),
+                Rule::notIn($not_id)
             ],
             'alias' => [
                 'nullable',

@@ -60,4 +60,16 @@ class Category extends Model
     {
         return $this->belongsTo(Category::class, 'category_id')->select('id', 'name', 'reg_no');
     }
+
+
+    public function getAllChildrenIds()
+    {
+        $ids = $this->childiren()->pluck('id')->toArray();
+
+        foreach ($this->childiren as $child) {
+            $ids = array_merge($ids, $child->getAllChildrenIds());
+        }
+
+        return $ids;
+    }
 }
