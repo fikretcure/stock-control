@@ -17,4 +17,7 @@ class CategoryElastic extends ElasticService
     public function __construct(){
         parent::__construct(new Category()->getTable());
     }
+
+    public array $sort_keywords = ['name','reg_no','parent.name'];
+
 }
